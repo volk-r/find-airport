@@ -6,9 +6,8 @@ table {
     margin: 0 auto;
     padding-top: 10px;
     gap: 16px;
-    /*border-collapse: collapse;*/
     border-spacing: 40px 15px;
-    width: 50%;
+    width: 55%;
     text-align: left;
 }
 

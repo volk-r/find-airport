@@ -12,6 +12,7 @@ Test task - airport search. Initialized with CRA
 
 ## For the implementation of the task were used 
 
-- axios
-- axios-hooks
+- [axios](https://github.com/axios/axios)
+- [axios-hooks](https://github.com/simoneb/axios-hooks)
 - custom hook useForm
+- [useDebounce](https://usehooks-ts.com/react-hook/use-debounce)

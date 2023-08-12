@@ -1,10 +1,12 @@
-import React, {useContext, useCallback} from 'react';
+import React, {useContext, useCallback, useEffect, useState} from 'react';
 import styles from './index.module.css'
 import {AirportContext} from '../../utils/context';
 import SearchIcon from '../../images/search-icon.png'
 import ClearIcon from '../../images/clear.png'
-import { useForm } from "../../hooks/useForm";
-import { IUseForm } from "../../utils/interfaces";
+import useForm from '../../hooks/useForm';
+import useDebounce from '../../hooks/useDebounce';
+import {IUseForm} from '../../utils/interfaces';
+import {searchAirport} from '../../utils/api';
 
 type TAirportData = {
     city: string,
@@ -21,30 +23,59 @@ type TAirportData = {
 
 export function Table() {
     const airportsData: TAirportData[] = useContext(AirportContext);
-    const { formValues, setFormValues, handleChange }: IUseForm = useForm({ searchText: ''});
+    const [results, setResults] = useState(airportsData);
 
-    const isShowClearButton = useCallback(
-        () => {
-            return formValues.searchText === '';
-        }, [formValues.searchText]
-    );
+    const [isSearching, setIsSearching] = useState(false);
+    const [isShowClearButton, setIsShowClearButton] = useState(false);
 
-    const handleClick = () => {
+    const {formValues, setFormValues, handleChange}: IUseForm = useForm({ searchText: ''});
+    const debouncedSearchTerm = useDebounce(formValues.searchText, 500);
+
+    const handleClickClear = useCallback(() => {
         setFormValues({...formValues, searchText: ''});
-    };
+    }, []);
+
+    useEffect(
+        () => {
+            if (debouncedSearchTerm) {
+                setIsShowClearButton(true);
+                setResults([]);
+                setIsSearching(true);
+
+                const searchResults = airportsData.filter(airportData => (
+                    airportData.name.toLowerCase().indexOf(debouncedSearchTerm.toLowerCase()) !== -1
+                ))
+
+                if (searchResults.length > 0) {
+                    setResults(searchResults);
+
+                    return;
+                }
+
+                searchAirport(debouncedSearchTerm).then((results: any) => {
+                    setIsSearching(false);
+                    setResults(results);
+                });
+            } else {
+                setResults(airportsData);
+                setIsShowClearButton(false)
+            }
+        },
+        [debouncedSearchTerm]
+    );
 
     return (
         <div className={styles.container}>
             <div className={styles.searchBar}>
                 <span className={styles.left}><img src={SearchIcon} alt="Search Icon" className={styles.searchIcon} /></span>
                 {
-                    !isShowClearButton()
+                    isShowClearButton
                     && <span className={styles.right}>
                         <img
                             src={ClearIcon}
                             alt="Clear Icon"
                             className={styles.searchIcon}
-                            onClick={handleClick}
+                            onClick={handleClickClear}
                         />
                     </span>
                 }
@@ -65,10 +96,15 @@ export function Table() {
                     </tr>
                 </thead>
                 <tbody>
-                    {airportsData.length === 0 && <tr style={{ alignItems: "center" }}>
-                        <td >Airports data not found</td>
-                    </tr>}
-                    {airportsData.map(airportData => (
+                    {
+                        results.length === 0 &&
+                        <tr style={{ alignItems: "center" }}>
+                            <td>
+                                {isSearching ? "Searching..." : "Airports data not found"}
+                            </td>
+                        </tr>
+                    }
+                    {results.map(airportData => (
                         <tr key={airportData.icao}>
                             <td>{airportData.name} ({airportData.icao})</td>
                             <td>{airportData.latitude}, {airportData.longitude}</td>
