@@ -1,11 +1,17 @@
 # Find airport
 
-Тестовое задание - поиск аэропорта. Инициализирован с помощью CRA.
+Test task - airport search. Initialized with CRA
 
-## Запуск
+## Launch
 
-`npm run start` — сборка и запуск локального сервера для разработки на порту 3000
+`npm run start` — building and running a local server for development on port 3000
 
-## Сборка
+## Build
 
 `npm run build`
+
+## For the implementation of the task were used 
+
+- axios
+- axios-hooks
+- custom hook useForm
