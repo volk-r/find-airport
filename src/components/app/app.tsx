@@ -1,26 +1,31 @@
 import React from 'react';
 import logo from '../../logo.svg';
 import styles from './app.module.css';
+import {useAxios} from '../../utils/api'
+import {AirportContext} from "../../utils/context";
+import {Table} from "../table";
 
 function App() {
-  return (
-    <div className={styles.App}>
-      <header className={styles.AppHeader}>
-        <img src={logo} className={styles.AppLogo} alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className={styles.AppLink}
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    const [{ data, loading, error }] = useAxios({
+        params: {
+            "country": "US"
+        }
+    })
+
+    return (
+        <div className={styles.App}>
+            <header className={styles.AppHeader}>
+                <h1>Find your airport</h1>
+                {!data && <img src={logo} className={styles.AppLogo} alt="logo"/>}
+                {loading && <p>Loading...</p>}
+                {error && <p>Error!</p>}
+            </header>
+            {data &&
+            <AirportContext.Provider value={data}>
+                <Table />
+            </AirportContext.Provider>}
+        </div>
+    );
 }
 
 export default App;
