@@ -1,6 +1,6 @@
 # Find airport
 
-Test task - airport search. Initialized with CRA
+Test task - search airport by name / code. Initialized with CRA
 
 ## Launch
 
