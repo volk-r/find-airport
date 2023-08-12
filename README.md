@@ -2,6 +2,8 @@
 
 Test task - search airport by name / code. Initialized with CRA
 
+![preview.png](src%2Fimages%2Fpreview.png)
+
 ## Launch
 
 `npm run start` — building and running a local server for development on port 3000
