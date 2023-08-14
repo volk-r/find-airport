@@ -66,7 +66,7 @@ export function Table() {
             <div className={styles.searchBar}>
                 <span className={styles.left}><img src={SearchIcon} alt="Search Icon" className={styles.searchIcon} /></span>
                 {
-                    formValues.searchText.length > 0
+                    debouncedSearchTerm.length > 0
                     && <span className={styles.right}>
                         <img
                             src={ClearIcon}
