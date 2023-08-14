@@ -58,7 +58,7 @@ export function Table() {
                 setResults(airportsData);
             }
         },
-        [debouncedSearchTerm]
+        [debouncedSearchTerm, airportsData]
     );
 
     return (
