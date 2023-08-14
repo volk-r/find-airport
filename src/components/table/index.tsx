@@ -26,7 +26,6 @@ export function Table() {
     const [results, setResults] = useState(airportsData);
 
     const [isSearching, setIsSearching] = useState(false);
-    const [isShowClearButton, setIsShowClearButton] = useState(false);
 
     const {formValues, setFormValues, handleChange}: IUseForm = useForm({ searchText: ''});
     const debouncedSearchTerm = useDebounce(formValues.searchText, 500);
@@ -38,7 +37,6 @@ export function Table() {
     useEffect(
         () => {
             if (debouncedSearchTerm) {
-                setIsShowClearButton(true);
                 setResults([]);
                 setIsSearching(true);
 
@@ -58,7 +56,6 @@ export function Table() {
                 });
             } else {
                 setResults(airportsData);
-                setIsShowClearButton(false)
             }
         },
         [debouncedSearchTerm]
@@ -69,7 +66,7 @@ export function Table() {
             <div className={styles.searchBar}>
                 <span className={styles.left}><img src={SearchIcon} alt="Search Icon" className={styles.searchIcon} /></span>
                 {
-                    isShowClearButton
+                    formValues.searchText.length > 0
                     && <span className={styles.right}>
                         <img
                             src={ClearIcon}
