@@ -1,4 +1,4 @@
-import React, {useContext, useCallback, useEffect, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import styles from './index.module.css'
 import {AirportContext} from '../../utils/context';
 import SearchIcon from '../../images/search-icon.png'
@@ -30,9 +30,9 @@ export function Table() {
     const {formValues, setFormValues, handleChange}: IUseForm = useForm({ searchText: ''});
     const debouncedSearchTerm = useDebounce(formValues.searchText, 500);
 
-    const handleClickClear = useCallback(() => {
+    const handleClickClear = () => {
         setFormValues({...formValues, searchText: ''});
-    }, []);
+    };
 
     useEffect(
         () => {
@@ -59,6 +59,15 @@ export function Table() {
             }
         },
         [debouncedSearchTerm, airportsData]
+    );
+
+    useEffect(
+        () => {
+            if (formValues.searchText === '') {
+                setResults(airportsData);
+            }
+        },
+        [results, airportsData, formValues.searchText]
     );
 
     return (
