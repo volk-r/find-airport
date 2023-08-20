@@ -1,27 +1,13 @@
-import React, {useContext, useEffect, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import styles from './index.module.css'
-import {AirportContext} from '../../utils/context';
 import SearchIcon from '../../images/search-icon.png'
 import ClearIcon from '../../images/clear.png'
 import useDebounce from '../../hooks/useDebounce';
 import {searchAirport} from '../../utils/api';
-
-type TAirportData = {
-    city: string,
-    country: string,
-    elevation_ft: string,
-    iata: string,
-    icao: string,
-    latitude: string,
-    longitude: string,
-    name: string,
-    region: string,
-    timezone: string,
-}
+import useAirportData from "../../hooks/useAirportData";
 
 export function Table() {
-    const airportsData: TAirportData[] = useContext(AirportContext);
-    const [results, setResults] = useState(airportsData);
+    const {airportsData, results, setResults} = useAirportData();
 
     const [isSearching, setIsSearching] = useState(false);
     const [searchText, setSearchText] = useState('');
@@ -60,7 +46,7 @@ export function Table() {
                 setResults(airportsData);
             }
         },
-        [debouncedSearchTerm, airportsData]
+        [debouncedSearchTerm, airportsData, setResults]
     );
 
     useEffect(
@@ -69,7 +55,7 @@ export function Table() {
                 setResults(airportsData);
             }
         },
-        [results, airportsData, searchText]
+        [results, airportsData, searchText, setResults]
     );
 
     return (
