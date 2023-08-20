@@ -3,9 +3,7 @@ import styles from './index.module.css'
 import {AirportContext} from '../../utils/context';
 import SearchIcon from '../../images/search-icon.png'
 import ClearIcon from '../../images/clear.png'
-import useForm from '../../hooks/useForm';
 import useDebounce from '../../hooks/useDebounce';
-import {IUseForm} from '../../utils/interfaces';
 import {searchAirport} from '../../utils/api';
 
 type TAirportData = {
@@ -26,12 +24,16 @@ export function Table() {
     const [results, setResults] = useState(airportsData);
 
     const [isSearching, setIsSearching] = useState(false);
-
-    const {formValues, setFormValues, handleChange}: IUseForm = useForm({ searchText: ''});
-    const debouncedSearchTerm = useDebounce(formValues.searchText, 500);
+    const [searchText, setSearchText] = useState('');
+    const debouncedSearchTerm = useDebounce(searchText, 500);
 
     const handleClickClear = () => {
-        setFormValues({...formValues, searchText: ''});
+        setSearchText('');
+    };
+
+    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const {value} = event.target;
+        setSearchText(value);
     };
 
     useEffect(
@@ -63,11 +65,11 @@ export function Table() {
 
     useEffect(
         () => {
-            if (formValues.searchText === '') {
+            if (searchText === '') {
                 setResults(airportsData);
             }
         },
-        [results, airportsData, formValues.searchText]
+        [results, airportsData, searchText]
     );
 
     return (
@@ -90,7 +92,7 @@ export function Table() {
                     type="text"
                     className={styles.searchInput}
                     placeholder="Please enter airport name or code"
-                    value={ formValues.searchText }
+                    value={ searchText }
                     onChange={ e => handleChange(e) }
                 />
             </div>

@@ -16,5 +16,4 @@ Test task - search airport by name / code. Initialized with CRA
 
 - [axios](https://github.com/axios/axios)
 - [axios-hooks](https://github.com/simoneb/axios-hooks)
-- custom hook useForm
 - [useDebounce](https://usehooks-ts.com/react-hook/use-debounce)
