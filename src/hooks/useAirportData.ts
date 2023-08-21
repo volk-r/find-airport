@@ -1,5 +1,5 @@
 import {useContext, useState} from 'react';
-import {AirportContext} from "../utils/context";
+import {AirportContext} from "../context/airport-data";
 import {IAirportData, IUseAirportData} from "../utils/interfaces";
 
 export default function useAirportData(): IUseAirportData {

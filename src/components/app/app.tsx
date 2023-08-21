@@ -1,7 +1,7 @@
 import React from 'react';
 import styles from './app.module.css';
 import {Table} from "../table";
-import {AirportDataProvider} from "../../context-providers/airport-data";
+import {AirportDataProvider} from "../../context/airport-data";
 
 function App() {
     return (

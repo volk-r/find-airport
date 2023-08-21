@@ -1,7 +1,8 @@
-import React, {FC} from "react";
+import React, {createContext, FC} from "react";
 import {useAxios} from "../utils/api";
 import {Header} from "../components/header";
-import {AirportContext} from "../utils/context";
+
+export const AirportContext = createContext([]);
 
 export const AirportDataProvider: FC<any> = ({ children }) => {
     const [{ data, loading, error }] = useAxios({
